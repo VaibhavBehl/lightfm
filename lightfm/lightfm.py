@@ -8,6 +8,8 @@ from .lightfm_fast import (CSRMatrix, FastLightFM,
                            fit_logistic, predict_lightfm,
                            fit_warp, fit_bpr, fit_warp_kos)
 
+from time import time
+
 
 CYTHON_DTYPE = np.float32
 
@@ -266,6 +268,7 @@ class LightFM(object):
         for epoch in range(epochs):
 
             if verbose:
+                start_time = time()
                 print('Epoch %s' % epoch)
 
             self._run_epoch(item_features,
@@ -273,6 +276,9 @@ class LightFM(object):
                             interactions,
                             num_threads,
                             self.loss)
+
+            if verbose:
+                print('Finished in: %.2f min' % ((time()-start_time)/60))
 
         return self
 
